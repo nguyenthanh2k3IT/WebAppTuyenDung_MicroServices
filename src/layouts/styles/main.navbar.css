@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.gender {
+    @apply font-bold tracking-wider cursor-pointer hover:bg-[#525050] h-full flex items-center justify-center;
+}
+
+.action-icon {
+    @apply px-4 py-3 text-white cursor-pointer;
+}

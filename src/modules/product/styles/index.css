@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.breadcrumb-container {
+    @apply border-b-2 pb-4;
+}
+
+.product-container {
+    @apply min-h-screen py-4 mx-auto max-w-[1920px];
+}
+
+.product-padding {
+    @apply px-10;
+}
+
+.product-filter-select {
+    @apply border-t border-b border-gray-300 py-10;
+}

@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sm-border {
+    @apply rounded-lg border-2;
+}
+
+.med-border {
+    @apply rounded-2xl  border-2;
+}
+
+.circle {
+    @apply rounded-[50%];
+}
+
+.transition {
+    @apply transition-all duration-200 ease-in-out;
+}
+
+.flex-all-center {
+    @apply flex justify-center items-center;
+}
+
+.full-shadow {
+    @apply ring-2 shadow-md rounded-md;
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-input {
+    @apply bg-gray-100 dark:bg-gray-800 border-gray-300 dark:border-gray-700;
+}
+
+.page-container {
+    @apply min-h-screen py-8 px-9 mx-auto max-w-[1920px];
+}
