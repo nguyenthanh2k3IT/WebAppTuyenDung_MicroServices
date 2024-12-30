@@ -1,42 +1,63 @@
-import { Home, ShoppingCart, Layers, Tag, Users, Package, Percent, Palette } from 'lucide-react';
-import { AdminNavigate } from '../../navigate';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {
+    Layers,
+    Tag,
+    Users,
+    Package,
+    Percent,
+    Palette,
+    FileText,
+    Briefcase,
+    Network,
+    MapPin,
+    Building,
+} from 'lucide-react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import SheetContainer from '@/components/container/sheet.container';
 import useSheetContext from '@/hooks/useSheet';
 import { SheetType } from '@/enums/sheet.enum';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import AdminNavlink from './admin.navlink';
 
-const iconMap = {
-    dashboard: Home,
-    order: ShoppingCart,
-    category: Layers,
-    product: Package,
-    discount: Percent,
-    user: Users,
-    brand: Tag,
-    size: Tag,
-    color: Palette,
-};
+const accordionItems = [
+    {
+        id: 'item-1',
+        title: 'Quản lý người dùng',
+        icon: Users,
+        links: [
+            { to: '/', label: 'Tài khoản', icon: Users },
+            { to: '/', label: 'Doanh nghiệp', icon: Building },
+            { to: '/', label: 'Quy mô', icon: Network },
+            { to: '/', label: 'Tỉnh thành', icon: MapPin },
+        ],
+    },
+    {
+        id: 'item-2',
+        title: 'Quản lý bài viết',
+        icon: FileText,
+        links: [
+            { to: '/', label: 'Bài viết', icon: FileText },
+            { to: '/', label: 'Thể loại', icon: Tag },
+            { to: '/', label: 'Thẻ', icon: Percent },
+        ],
+    },
+    {
+        id: 'item-3',
+        title: 'Quản lý công việc',
+        icon: Briefcase,
+        links: [
+            { to: '/', label: 'Công việc', icon: Briefcase },
+            { to: '/', label: 'Hình thức làm việc', icon: Layers },
+            { to: '/', label: 'Kinh nghiệm', icon: Palette },
+            { to: '/', label: 'Cấp bậc', icon: Package },
+            { to: '/', label: 'Giới tính', icon: Users },
+        ],
+    },
+];
 
 function AdminSidebar() {
     const { sheets, closeSheet } = useSheetContext();
     const state = sheets[SheetType.AdminSidebar];
     const isDesktop = useMediaQuery('(min-width: 768px)');
-    const location = useLocation();
-    const navigate = useNavigate();
-
-    const menuItems = Object.entries(AdminNavigate)
-        .filter(([_, value]) => value.sidebar === true)
-        .map(([key, value]) => ({
-            icon: iconMap[key as keyof typeof iconMap] || Home,
-            label: value.title,
-            to: value.link,
-        }));
-
-    const handleNavigate = (to: string) => {
-        navigate(to);
-        if (!isDesktop) closeSheet(SheetType.AdminSidebar);
-    };
 
     const SidebarContent = () => {
         return (
@@ -45,24 +66,28 @@ function AdminSidebar() {
                     <h1 className="text-2xl font-bold">JOB ALLEY</h1>
                 </div>
                 <nav className="mt-8">
-                    <ul>
-                        {menuItems.map((item, index) => (
-                            <li
-                                onClick={() => handleNavigate(item.to)}
-                                key={index}
-                                className={`px-4 py-2 cursor-pointer ${
-                                    location.pathname === item.to
-                                        ? 'bg-[#2E3A5C] text-white'
-                                        : 'hover:bg-[#2E3A5C] text-gray-300 hover:text-white'
-                                }`}
-                            >
-                                <div className="flex items-center space-x-3">
+                    <Accordion type="multiple" className="w-full">
+                        {accordionItems.map((item) => (
+                            <AccordionItem key={item.id} value={item.id} className="border-b-0 mb-2">
+                                <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider">
                                     <item.icon className="w-5 h-5" />
-                                    <span>{item.label}</span>
-                                </div>
-                            </li>
+                                    <span>{item.title}</span>
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <ul>
+                                        {item.links.map((link, index) => (
+                                            <AdminNavlink
+                                                key={index}
+                                                to={link.to}
+                                                label={link.label}
+                                                icon={link.icon}
+                                            />
+                                        ))}
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
                         ))}
-                    </ul>
+                    </Accordion>
                 </nav>
             </>
         );
