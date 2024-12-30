@@ -42,7 +42,7 @@ function AdminSidebar() {
         return (
             <>
                 <div className="p-4">
-                    <h1 className="text-2xl font-bold">ASOS ADMIN</h1>
+                    <h1 className="text-2xl font-bold">JOB ALLEY</h1>
                 </div>
                 <nav className="mt-8">
                     <ul>

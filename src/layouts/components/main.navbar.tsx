@@ -10,9 +10,6 @@ import { User, Heart, ShoppingBag, X, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { AuthNavigate } from '@/modules/auth/navigate';
-import { AccountNavigate } from '@/modules/account/navigate';
-import { WishlistNavigate } from '@/modules/wishlist/navigate';
-import { CartNavigate } from '@/modules/cart/navigate';
 import useProfile from '@/hooks/useProfile';
 import useCaller from '@/hooks/useCaller';
 import { removeTokens } from '@/helpers/storage.helper';
@@ -189,14 +186,14 @@ function MainNavbar() {
                             </div>
                             <div className="py-2">
                                 <Link
-                                    to={AccountNavigate.detail.link}
+                                    to={''}
                                     className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
                                     <User className="mr-2 h-4 w-4" />
                                     My Account
                                 </Link>
                                 <Link
-                                    to={AccountNavigate.order.link}
+                                    to={''}
                                     className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 >
                                     <ShoppingBag className="mr-2 h-4 w-4" />
@@ -204,7 +201,7 @@ function MainNavbar() {
                                 </Link>
                                 {profile && (
                                     <Link
-                                        to={WishlistNavigate.wishlist.link}
+                                        to={''}
                                         className="flex w-full items-center px-2 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
                                         <Heart className="mr-2 h-4 w-4" />
@@ -229,13 +226,13 @@ function MainNavbar() {
                         </div>
                     ) : (
                         <div className="action-icon">
-                            <Link to={WishlistNavigate.wishlist.link}>
+                            <Link to={''}>
                                 <Heart className=" text-white hover:scale-125 transition" />
                             </Link>
                         </div>
                     )}
                     <div className="action-icon">
-                        <Link to={CartNavigate.cart.link}>
+                        <Link to={''}>
                             <ShoppingBag className=" text-white hover:scale-125 transition" />
                         </Link>
                     </div>
