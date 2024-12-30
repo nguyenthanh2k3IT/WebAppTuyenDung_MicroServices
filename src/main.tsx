@@ -16,29 +16,32 @@ import './index.css';
 import '../app/globals.css';
 import NotificationProvider from './components/provider/notification.provider';
 import { ToastContainer } from 'react-toastify';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Router>
-            <TokenProvider>
-                <Provider store={reduxStore}>
-                    <PersistGate loading={null} persistor={persistor}>
-                        <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-                            <GlobalStyles>
-                                <NotificationProvider>
-                                    <SheetProvider>
-                                        <ModalProvider>
-                                            <App />
-                                            <Toaster />
-                                            <ToastContainer />
-                                        </ModalProvider>
-                                    </SheetProvider>
-                                </NotificationProvider>
-                            </GlobalStyles>
-                        </ThemeProvider>
-                    </PersistGate>
-                </Provider>
-            </TokenProvider>
+            <Provider store={reduxStore}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
+                        <GlobalStyles>
+                            <SheetProvider>
+                                <ModalProvider>
+                                    <QueryClientProvider client={queryClient}>
+                                        <App />{' '}
+                                    </QueryClientProvider>
+                                    <Toaster />
+                                    <ToastContainer />
+                                    <TokenProvider />
+                                    <NotificationProvider />
+                                </ModalProvider>
+                            </SheetProvider>
+                        </GlobalStyles>
+                    </ThemeProvider>
+                </PersistGate>
+            </Provider>
         </Router>
     </React.StrictMode>,
 );

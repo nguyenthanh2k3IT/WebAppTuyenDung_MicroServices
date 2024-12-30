@@ -1,10 +1,9 @@
 import { getAccessTokenExpireTime, getRefreshToken, getToken, removeTokens, setToken } from '@/helpers/storage.helper';
-import { ChildNode } from '@/types/common/layout';
-import { useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 import useCaller from '@/hooks/useCaller';
 import { asosCookies } from '@/constants/cookies';
 
-const TokenProvider: React.FC<ChildNode> = ({ children }) => {
+const TokenProvider = () => {
     const { callApi } = useCaller<Authentication>();
 
     useEffect(() => {
@@ -59,7 +58,7 @@ const TokenProvider: React.FC<ChildNode> = ({ children }) => {
         return result.data;
     };
 
-    return children;
+    return <Fragment></Fragment>;
 };
 
 export default TokenProvider;

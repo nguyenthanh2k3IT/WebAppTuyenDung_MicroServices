@@ -19,6 +19,7 @@ import { SheetType } from '@/enums/sheet.enum';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AdminNavlink from './admin.navlink';
 import { Link } from 'react-router-dom';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 const accordionItems = [
     {
@@ -68,36 +69,38 @@ function AdminSidebar() {
                     <h1 className="text-2xl font-bold">JOB ALLEY</h1>
                 </div>
                 <nav className="mt-8">
-                    <Accordion type="multiple" className="w-full">
-                        <AccordionItem value={'dashboard'} className="border-b-0 mb-2">
-                            <Link to="/admin/dashboard">
-                                <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider no-rotate">
-                                    <Home className="w-5 h-5" />
-                                    <span>{'Trang chủ'}</span>
-                                </AccordionTrigger>
-                            </Link>
-                        </AccordionItem>
-                        {accordionItems.map((item) => (
-                            <AccordionItem key={item.id} value={item.id} className="border-b-0 mb-2">
-                                <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider">
-                                    <item.icon className="w-5 h-5" />
-                                    <span>{item.title}</span>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <ul>
-                                        {item.links.map((link, index) => (
-                                            <AdminNavlink
-                                                key={index}
-                                                to={link.to}
-                                                label={link.label}
-                                                icon={link.icon}
-                                            />
-                                        ))}
-                                    </ul>
-                                </AccordionContent>
+                    <ScrollArea className="w-full h-[85vh]">
+                        <Accordion type="multiple" className="w-full">
+                            <AccordionItem value={'dashboard'} className="border-b-0 mb-2">
+                                <Link to="/admin/dashboard">
+                                    <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider no-rotate">
+                                        <Home className="w-5 h-5" />
+                                        <span>{'Trang chủ'}</span>
+                                    </AccordionTrigger>
+                                </Link>
                             </AccordionItem>
-                        ))}
-                    </Accordion>
+                            {accordionItems.map((item) => (
+                                <AccordionItem key={item.id} value={item.id} className="border-b-0 mb-2">
+                                    <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider no-rotate">
+                                        <item.icon className="w-5 h-5" />
+                                        <span>{item.title}</span>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <ul>
+                                            {item.links.map((link, index) => (
+                                                <AdminNavlink
+                                                    key={index}
+                                                    to={link.to}
+                                                    label={link.label}
+                                                    icon={link.icon}
+                                                />
+                                            ))}
+                                        </ul>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </ScrollArea>
                 </nav>
             </>
         );

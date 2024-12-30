@@ -1,5 +1,4 @@
-import { ChildNode } from '@/types/common/layout';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { HubConnectionBuilder, HubConnection, HttpTransportType } from '@microsoft/signalr';
 import useProfile from '@/hooks/useProfile';
 import { getToken } from '@/helpers/storage.helper';
@@ -7,7 +6,7 @@ import { useToast } from '../ui/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 
-const NotificationProvider: React.FC<ChildNode> = ({ children }) => {
+const NotificationProvider = () => {
     const [connection, setConnection] = useState<HubConnection | null>(null);
     const { profile } = useProfile();
     const { toast } = useToast();
@@ -95,7 +94,7 @@ const NotificationProvider: React.FC<ChildNode> = ({ children }) => {
         }
     }, [profile, connection]);
 
-    return children;
+    return <Fragment></Fragment>;
 };
 
 export default NotificationProvider;
