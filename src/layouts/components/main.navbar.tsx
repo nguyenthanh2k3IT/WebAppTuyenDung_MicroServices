@@ -1,38 +1,24 @@
 import Flex from '@/components/container/flex.container';
 import logo from '../../assets/svg/asos-logo.svg';
 import '../styles/main.navbar.css';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { HomeNavigate } from '@/modules/home/navigate';
 import SearchInput from '@/components/search';
 import { useState, useRef, useEffect, Fragment } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { User, Heart, ShoppingBag, X, Bell } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { AuthNavigate } from '@/modules/auth/navigate';
 import useProfile from '@/hooks/useProfile';
 import useCaller from '@/hooks/useCaller';
 import { removeTokens } from '@/helpers/storage.helper';
-import useProductFilter from '@/hooks/useProductFilter';
-import { ProductFilterState } from '@/redux/slicers/product-filter.slice';
-import useFetch from '@/hooks/useFetch';
-import { cn } from '@/lib/utils';
-import { CaretDownIcon } from '@radix-ui/react-icons';
 import NotificationPopover from '@/modules/admin/layout/components/notification.popover';
 
 function MainNavbar() {
-    const { data: genders, loading } = useFetch<GenderMenu[]>('/catalog-service/api/Gender/menu', []);
-    const [categories, setCategories] = useState<CategoryInGender[] | null>(null);
-    const [subCategories, setSubCategories] = useState<CategoryInGender[] | null>(null);
-    const [selected, setSelected] = useState<string | null>(null);
-    const { filter, searchOutsideProductPage, createParams } = useProductFilter();
-    const location = useLocation();
-    const navigate = useNavigate();
     const { callApi } = useCaller<boolean>();
     const { profile } = useProfile();
     const [search, setSearch] = useState<string>('');
     const [isOpen, setIsOpen] = useState(false);
-    const [isOpenSubCategory, setIsOpenSubCategory] = useState<boolean>(false);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseEnter = () => {
@@ -62,56 +48,10 @@ function MainNavbar() {
     };
 
     useEffect(() => {
-        if (genders && genders.length > 0) {
-            setSelected(genders[0].slug);
-            setCategories(genders[0].categories);
-        }
-    }, [genders]);
-
-    useEffect(() => {
         return () => {
             if (timeoutRef.current) clearTimeout(timeoutRef.current);
         };
     }, []);
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            const currentPath = location.pathname;
-            if (!currentPath.includes('product')) {
-                searchOutsideProductPage(search);
-                navigate(`/product?q=${search}`);
-            } else {
-                const option: ProductFilterState = {
-                    pageIndex: filter.pageIndex,
-                    pageSize: filter.pageSize,
-                    textSearch: search,
-                };
-                const params = createParams(option);
-                navigate(`/product?${params}`);
-            }
-        }
-    };
-
-    const switchGender = (item: GenderMenu) => {
-        setSelected(item.slug);
-        setCategories(item.categories);
-        onHideSubCategory();
-    };
-
-    const onShowSubCategory = (item: CategoryInGender[]) => {
-        setSubCategories(item);
-        setIsOpenSubCategory(true);
-    };
-
-    const onHideSubCategory = (): void => {
-        setSubCategories(null);
-        setIsOpenSubCategory(true);
-    };
-
-    const onNavigate = (item: string) => {
-        const url = `/product?gender=${selected}&category=${item}`;
-        navigate(url);
-    };
 
     return (
         <div className=" w-full sticky top-0 z-20">
@@ -120,27 +60,14 @@ function MainNavbar() {
                     <Link to={HomeNavigate.home.link} className="w-28">
                         <img src={logo} alt="logo" className="text-white" style={{ filter: 'invert(1)' }} />
                     </Link>
-                    {loading && (
-                        <Fragment>
-                            <div className="gender transition w-28">Women</div>
-                            <div className="gender transition w-28">Men</div>
-                        </Fragment>
-                    )}
-                    {genders?.map((item, index) => {
-                        return (
-                            <div
-                                onClick={() => switchGender(item)}
-                                key={index}
-                                className={cn('gender transition w-28', selected === item.slug ? 'bg-[#525050]' : '')}
-                            >
-                                {item.name}
-                            </div>
-                        );
-                    })}
+                    <Fragment>
+                        <div className="gender transition w-28">Women</div>
+                        <div className="gender transition w-28">Men</div>
+                    </Fragment>
                 </Flex>
                 <Separator orientation="vertical" style={{ background: 'gray' }} />
                 <div className="py-3 w-[835px] pl-8 pr-4">
-                    <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} onKeyDown={handleKeyDown} />
+                    <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} />
                 </div>
                 <Separator orientation="vertical" style={{ background: 'gray' }} />
                 <Flex items="center">
@@ -238,44 +165,6 @@ function MainNavbar() {
                     </div>
                 </Flex>
             </Flex>
-            {selected && (
-                <div className="w-full bg-[#525050] h-[50px]">
-                    <Flex className="max-w-[1450px] mx-auto px-11 h-full">
-                        {categories?.map((item, key) => {
-                            return (
-                                <Button
-                                    onClick={() => onNavigate(item.slug)}
-                                    onMouseEnter={() => onShowSubCategory(item.children)}
-                                    key={key}
-                                    className="tracking-wider text-lg !font-normal text-white !rounded-none shadow-none h-full px-3 bg-transparent hover:bg-[#EEEEEE] hover:text-black"
-                                >
-                                    {item.name}
-                                    {item.children && item.children.length > 0 && (
-                                        <CaretDownIcon className="ml-[2px]" />
-                                    )}
-                                </Button>
-                            );
-                        })}
-                    </Flex>
-                </div>
-            )}
-            {isOpenSubCategory && selected && subCategories && subCategories.length > 0 && (
-                <div className="w-full bg-[#EEEEEE] h-[50px] " onMouseLeave={onHideSubCategory}>
-                    <Flex className="max-w-[1450px] mx-auto px-11 h-full">
-                        {subCategories?.map((item, key) => {
-                            return (
-                                <Button
-                                    onClick={() => onNavigate(item.slug)}
-                                    key={key}
-                                    className="tracking-wider text-lg !font-normal text-black !rounded-none shadow-none h-full px-3 bg-transparent hover:bg-[#e0dfdf] hover:text-black"
-                                >
-                                    {item.name}
-                                </Button>
-                            );
-                        })}
-                    </Flex>
-                </div>
-            )}
         </div>
     );
 }
