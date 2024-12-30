@@ -21,6 +21,10 @@ import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
 import useFetch from '@/hooks/useFetch';
+import { useQuery } from '@tanstack/react-query';
+import RoleService from '@/services/role.service';
+import { queryConfig, queryKey } from '@/constants/react-query-config';
+import UserStatusService from '@/services/user-status.service';
 
 function UserManagement() {
     const { toast } = useToast();
@@ -143,10 +147,16 @@ function UserManagement() {
     );
 
     const filterComponent = useCallback(() => {
-        const roleEndpoint = useMemo(() => '/identity-service/api/Role', []);
-        const { data: roles } = useFetch<Role[]>(roleEndpoint, null, [roleEndpoint]);
-        const statusEndpoint = useMemo(() => '/identity-service/api/Status', []);
-        const { data: statuses } = useFetch<UserStatus[]>(statusEndpoint, null, [statusEndpoint]);
+        const { data: roles } = useQuery<Role[], Error>({
+            queryKey: [queryKey.role],
+            queryFn: () => RoleService.getAll(),
+            ...queryConfig,
+        });
+        const { data: statuses } = useQuery<UserStatus[], Error>({
+            queryKey: [queryKey.userStatus],
+            queryFn: () => UserStatusService.getAll(),
+            ...queryConfig,
+        });
 
         const handleFilterChange = useCallback((key: 'status' | 'role', value: string) => {
             setFilter((prevFilter) => ({
@@ -162,7 +172,7 @@ function UserManagement() {
                         <SelectValue placeholder="Select Role" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="ALL">All Roles</SelectItem>
+                        <SelectItem value="ALL">Tất cả</SelectItem>
                         {roles?.map((value, index) => {
                             return (
                                 <SelectItem value={value.id} key={index}>
@@ -177,7 +187,7 @@ function UserManagement() {
                         <SelectValue placeholder="Select Status" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="ALL">All Status</SelectItem>
+                        <SelectItem value="ALL">Tất cả</SelectItem>
                         {statuses?.map((value, index) => {
                             return (
                                 <SelectItem value={value.id} key={index}>
