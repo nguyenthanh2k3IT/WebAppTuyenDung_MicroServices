@@ -10,6 +10,7 @@ import {
     Network,
     MapPin,
     Building,
+    Home,
 } from 'lucide-react';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import SheetContainer from '@/components/container/sheet.container';
@@ -17,6 +18,7 @@ import useSheetContext from '@/hooks/useSheet';
 import { SheetType } from '@/enums/sheet.enum';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AdminNavlink from './admin.navlink';
+import { Link } from 'react-router-dom';
 
 const accordionItems = [
     {
@@ -24,8 +26,8 @@ const accordionItems = [
         title: 'Quản lý người dùng',
         icon: Users,
         links: [
-            { to: '/', label: 'Tài khoản', icon: Users },
-            { to: '/', label: 'Doanh nghiệp', icon: Building },
+            { to: '/admin/user', label: 'Tài khoản', icon: Users },
+            { to: '/admin/user', label: 'Doanh nghiệp', icon: Building },
             { to: '/', label: 'Quy mô', icon: Network },
             { to: '/', label: 'Tỉnh thành', icon: MapPin },
         ],
@@ -67,6 +69,14 @@ function AdminSidebar() {
                 </div>
                 <nav className="mt-8">
                     <Accordion type="multiple" className="w-full">
+                        <AccordionItem value={'dashboard'} className="border-b-0 mb-2">
+                            <Link to="/admin/dashboard">
+                                <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider no-rotate">
+                                    <Home className="w-5 h-5" />
+                                    <span>{'Trang chủ'}</span>
+                                </AccordionTrigger>
+                            </Link>
+                        </AccordionItem>
                         {accordionItems.map((item) => (
                             <AccordionItem key={item.id} value={item.id} className="border-b-0 mb-2">
                                 <AccordionTrigger className="px-2 bg-[#303b61] flex items-center space-x-2 tracking-wider">

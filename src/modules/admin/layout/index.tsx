@@ -3,6 +3,7 @@ import { ChildNode } from '@/types/common/layout';
 import AdminSidebar from './components/admin.sidebar';
 import AdminNavbar from './components/admin.navbar';
 import UpdatePasswordModal from './components/update-password.module';
+import '../styles/index.css';
 
 const AdminLayout: React.FC<ChildNode> = ({ children }) => {
     return (
