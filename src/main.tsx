@@ -17,7 +17,7 @@ import '../app/globals.css';
 import NotificationProvider from './components/provider/notification.provider';
 import { ToastContainer } from 'react-toastify';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -30,7 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                             <SheetProvider>
                                 <ModalProvider>
                                     <QueryClientProvider client={queryClient}>
-                                        <App />{' '}
+                                        <App /> <ReactQueryDevtools initialIsOpen={false} />
                                     </QueryClientProvider>
                                     <Toaster />
                                     <ToastContainer />

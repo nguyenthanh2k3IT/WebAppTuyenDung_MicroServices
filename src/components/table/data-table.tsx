@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { isEmpty } from '@/helpers/object.helper';
 import { TablePagination } from './pagination';
-import useFetch from '@/hooks/useFetch';
+//import useFetch from '@/hooks/useFetch';
 import { randomString } from '@/helpers/string.helper';
 import DeleteDialog from '../dialog/delete.dialog';
 import { API } from '@/utils/axios';
@@ -34,6 +34,7 @@ import { Label } from '../ui/label';
 import Flex from '../container/flex.container';
 import DeleteButton from '../button/delete.button';
 import useProfile from '@/hooks/useProfile';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -73,6 +74,7 @@ const DataTableComponent = React.forwardRef<DataTableRef, DataTableProps<any, an
     }: DataTableProps<TData, TValue>,
     ref: React.Ref<{ onFetch: () => void }>,
 ) {
+    const queryClient = useQueryClient();
     const { profile } = useProfile();
     const { toast } = useToast();
     const [deleteId, setDeleteId] = React.useState<any[]>([]);
@@ -86,6 +88,20 @@ const DataTableComponent = React.forwardRef<DataTableRef, DataTableProps<any, an
     const [defaultParam, setDefaultParam] = React.useState(() => {
         return { ...initialDefaultParam, ...param };
     });
+
+    const getPaginateData = async (
+        endpoint: string | undefined,
+        params?: any,
+    ): Promise<PaginatedData<TData> | null> => {
+        try {
+            if (!endpoint) return null;
+            const res = await API.get<ApiRes<PaginatedData<TData>>>(endpoint, { params });
+            const data = res.data;
+            return data.data;
+        } catch (error) {
+            return null;
+        }
+    };
 
     React.useEffect(() => {
         const key = selectKey;
@@ -116,10 +132,17 @@ const DataTableComponent = React.forwardRef<DataTableRef, DataTableProps<any, an
         }
     }, [param]);
 
-    const { data: paginate, loading } =
-        !!api && !dataTable
-            ? useFetch<PaginatedData<TData>>(api, { ...defaultParam }, [defaultParam, fetch, ...dependency])
-            : { data: null, loading: false };
+    // const { data: paginate, loading } =
+    //     !!api && !dataTable
+    //         ? useFetch<PaginatedData<TData>>(api, { ...defaultParam }, [defaultParam, fetch, ...dependency])
+    //         : { data: null, loading: false };
+
+    const { data: paginate, isLoading: loading } = useQuery<PaginatedData<TData> | null>({
+        queryKey: [api || fetch, defaultParam, ...dependency],
+        queryFn: () => getPaginateData(api, defaultParam),
+        staleTime: 1000 * 10, // 10 giây
+        refetchOnWindowFocus: false,
+    });
 
     const data = React.useMemo(() => {
         return dataTable ? dataTable : paginate?.items || [];
@@ -167,6 +190,10 @@ const DataTableComponent = React.forwardRef<DataTableRef, DataTableProps<any, an
     };
 
     const onFetch = () => {
+        queryClient.invalidateQueries({
+            queryKey: [api || fetch, defaultParam, ...dependency],
+            exact: true,
+        });
         const text = randomString(12);
         setFetch(text);
         setRowSelection({});

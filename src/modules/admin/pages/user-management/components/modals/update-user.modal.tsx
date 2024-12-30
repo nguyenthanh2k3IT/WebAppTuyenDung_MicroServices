@@ -19,8 +19,8 @@ export interface UpdateUserInfo {
     fullname: string;
     address: string;
     isEmailConfirmed: boolean;
-    statusId: string;
-    roleId: string;
+    statusId: number;
+    roleId: number;
 }
 
 const initialState: UpdateUserInfo = {
@@ -30,8 +30,8 @@ const initialState: UpdateUserInfo = {
     fullname: '',
     address: '',
     isEmailConfirmed: false,
-    statusId: '',
-    roleId: '',
+    statusId: -1,
+    roleId: -1,
 };
 
 const UpdateUserModal: React.FC = () => {
@@ -45,6 +45,8 @@ const UpdateUserModal: React.FC = () => {
 
     useEffect(() => {
         if (modalState && modalState.visible && modalState.data) {
+            console.log(modalState.data.status?.id || -1);
+
             setInfo({
                 id: modalState.data.id || '',
                 email: modalState.data.email || '',
@@ -52,8 +54,8 @@ const UpdateUserModal: React.FC = () => {
                 fullname: modalState.data.fullname || '',
                 address: modalState.data.address || '',
                 isEmailConfirmed: modalState.data.isEmailConfirmed || false,
-                statusId: modalState.data.status?.id || '',
-                roleId: modalState.data.role?.id || '',
+                statusId: modalState.data.status?.id,
+                roleId: modalState.data.role?.id,
             });
         }
     }, [modalState]);
@@ -127,6 +129,8 @@ const UpdateUserModal: React.FC = () => {
         }
     };
 
+    console.log('info', updateUserInfo.statusId);
+
     return (
         <DrawerContainer title="Update User" open={modalState.visible} onClose={() => closeModal(ModalType.UpdateUser)}>
             <div className={'grid items-start gap-4 px-4 md:w-[400px] sm:w-full'}>
@@ -172,14 +176,15 @@ const UpdateUserModal: React.FC = () => {
                         <Label>Role</Label>
                         <Select
                             onValueChange={(value) => handleSelectChange('roleId', value)}
-                            value={updateUserInfo.roleId}
+                            value={updateUserInfo.roleId.toString()}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Role" />
+                                <SelectValue placeholder="Loại tài khoản" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={RoleType.ADMIN}>Admin</SelectItem>
-                                <SelectItem value={RoleType.CUSTOMER}>Customer</SelectItem>
+                                <SelectItem value={RoleType.ADMIN.toString()}>Quản trị viên</SelectItem>
+                                <SelectItem value={RoleType.COMPANY.toString()}>Doanh nghiệp</SelectItem>
+                                <SelectItem value={RoleType.JOBSEEKER.toString()}>Người tìm việc</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -187,14 +192,15 @@ const UpdateUserModal: React.FC = () => {
                         <Label>Status</Label>
                         <Select
                             onValueChange={(value) => handleSelectChange('statusId', value)}
-                            value={updateUserInfo.statusId}
+                            value={updateUserInfo.statusId.toString()}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Status" />
+                                <SelectValue placeholder="Trạng thái" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={UserStatusType.ACTIVE}>Active</SelectItem>
-                                <SelectItem value={UserStatusType.BANNED}>Banned</SelectItem>
+                                <SelectItem value={UserStatusType.UNACTIVE.toString()}>Chưa kích hoạt</SelectItem>
+                                <SelectItem value={UserStatusType.ACTIVE.toString()}>Kích hoạt</SelectItem>
+                                <SelectItem value={UserStatusType.BANNED.toString()}>Khóa</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

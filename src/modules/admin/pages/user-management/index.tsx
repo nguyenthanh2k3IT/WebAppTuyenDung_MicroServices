@@ -20,7 +20,6 @@ import ConfirmDialog from '@/components/dialog/confirm.dialog';
 import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
-import useFetch from '@/hooks/useFetch';
 import { useQuery } from '@tanstack/react-query';
 import RoleService from '@/services/role.service';
 import { queryConfig, queryKey } from '@/constants/react-query-config';
@@ -33,11 +32,11 @@ function UserManagement() {
     const { dialogs, openDialog, closeDialog } = useDialog(['banUser']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
-        status: '',
+        userStatus: '',
         role: '',
     });
 
-    const handleOpenDialog = useCallback((id: string, status: string) => {
+    const handleOpenDialog = useCallback((id: string, status: number) => {
         openDialog('banUser', { id, status });
     }, []);
 
@@ -69,6 +68,9 @@ function UserManagement() {
                         <div>
                             {row.original.status?.id == UserStatusType.ACTIVE && (
                                 <Badge className="bg-green-400 text-sm">{row.original.status?.name}</Badge>
+                            )}
+                            {row.original.status?.id == UserStatusType.UNACTIVE && (
+                                <Badge className="bg-yellow-400 text-sm">{row.original.status?.name}</Badge>
                             )}
                             {row.original.status?.id == UserStatusType.BANNED && (
                                 <Badge className="bg-red-400 text-sm">{row.original.status?.name}</Badge>
@@ -158,7 +160,7 @@ function UserManagement() {
             ...queryConfig,
         });
 
-        const handleFilterChange = useCallback((key: 'status' | 'role', value: string) => {
+        const handleFilterChange = useCallback((key: 'userStatus' | 'role', value: string) => {
             setFilter((prevFilter) => ({
                 ...prevFilter,
                 [key]: value === 'ALL' ? '' : value,
@@ -169,7 +171,7 @@ function UserManagement() {
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
                 <Select onValueChange={(value) => handleFilterChange('role', value)} value={filter.role}>
                     <SelectTrigger className="w-full sm:w-[180px] filter-input">
-                        <SelectValue placeholder="Select Role" />
+                        <SelectValue placeholder="Loại tài khoản" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="ALL">Tất cả</SelectItem>
@@ -182,9 +184,9 @@ function UserManagement() {
                         })}
                     </SelectContent>
                 </Select>
-                <Select onValueChange={(value) => handleFilterChange('status', value)} value={filter.status}>
+                <Select onValueChange={(value) => handleFilterChange('userStatus', value)} value={filter.userStatus}>
                     <SelectTrigger className="w-full sm:w-[180px] filter-input">
-                        <SelectValue placeholder="Select Status" />
+                        <SelectValue placeholder="Trạng thái" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="ALL">Tất cả</SelectItem>
