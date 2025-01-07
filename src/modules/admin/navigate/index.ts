@@ -11,4 +11,16 @@ export const AdminNavigate: NavigateType = {
         title: 'User Management',
         link: '/admin/user',
     },
+    province: {
+        title: 'Province Management',
+        link: '/admin/province',
+    },
+    size: {
+        title: 'Size Management',
+        link: '/admin/size',
+    },
+    company: {
+        title: 'Company Management',
+        link: '/admin/company',
+    },
 };

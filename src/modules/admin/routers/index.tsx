@@ -1,7 +1,7 @@
 import AuthLayout from '@/modules/auth/layout/auth.layout';
 import AdminLayout from '../layout/index';
 import { AdminNavigate } from '../navigate';
-import { AdminLogin, Dashboard, UserManagement } from '../pages';
+import { AdminLogin, Dashboard, UserManagement, ProvinceManagement, SizeManagement, CompanyManagement } from '../pages';
 //import AdminMiddleware from '@/middlewares/admin.middleware';
 
 export const AdminRoutes: Route[] = [
@@ -24,5 +24,26 @@ export const AdminRoutes: Route[] = [
         page: Dashboard,
         layout: AdminLayout,
         // middleware: AdminMiddleware,
+    },
+    {
+        path: AdminNavigate.province.link,
+        title: AdminNavigate.province.title,
+        page: ProvinceManagement,
+        layout: AdminLayout,
+        // middleware: AdminMiddleware,
+    },
+    {
+        path: AdminNavigate.size.link,
+        title: AdminNavigate.size.title,
+        page: SizeManagement,
+        layout: AdminLayout,
+        // middleware: AdminMiddleware
+    },
+    {
+        path: AdminNavigate.company.link,
+        title: AdminNavigate.company.title,
+        page: CompanyManagement,
+        layout: AdminLayout,
+        // middleware: AdminMiddleware
     },
 ];

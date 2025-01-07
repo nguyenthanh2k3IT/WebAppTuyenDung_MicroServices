@@ -177,8 +177,8 @@ const CreateUserModal: React.FC = () => {
                                 <SelectValue placeholder="Select Role" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={RoleType.ADMIN}>Admin</SelectItem>
-                                <SelectItem value={RoleType.CUSTOMER}>Customer</SelectItem>
+                                <SelectItem value={RoleType.ADMIN.toString()}>Admin</SelectItem>
+                                {/* <SelectItem value={RoleType.CUSTOMER.toString()}>Customer</SelectItem> */}
                             </SelectContent>
                         </Select>
                     </div>
@@ -192,8 +192,8 @@ const CreateUserModal: React.FC = () => {
                                 <SelectValue placeholder="Select Status" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={UserStatusType.ACTIVE}>Active</SelectItem>
-                                <SelectItem value={UserStatusType.BANNED}>Banned</SelectItem>
+                                <SelectItem value={UserStatusType.ACTIVE.toString()}>Active</SelectItem>
+                                <SelectItem value={UserStatusType.BANNED.toString()}>Banned</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

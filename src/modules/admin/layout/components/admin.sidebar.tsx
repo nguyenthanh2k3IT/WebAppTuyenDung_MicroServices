@@ -28,9 +28,9 @@ const accordionItems = [
         icon: Users,
         links: [
             { to: '/admin/user', label: 'Tài khoản', icon: Users },
-            { to: '/admin/user', label: 'Doanh nghiệp', icon: Building },
-            { to: '/', label: 'Quy mô', icon: Network },
-            { to: '/', label: 'Tỉnh thành', icon: MapPin },
+            { to: '/admin/company', label: 'Doanh nghiệp', icon: Building },
+            { to: '/admin/size', label: 'Quy mô', icon: Network },
+            { to: '/admin/province', label: 'Tỉnh thành', icon: MapPin },
         ],
     },
     {

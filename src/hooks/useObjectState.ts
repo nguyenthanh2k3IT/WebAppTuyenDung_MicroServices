@@ -16,6 +16,17 @@ function useObjectState<T extends object>(initialState: T) {
         }));
     };
 
+    const setMultipleValues = (newValues: Partial<T>) => {
+        setState((prevState) => ({
+            ...prevState,
+            ...newValues,
+        }));
+    };
+
+    const resetState = () => {
+        setState(initialState);
+    };
+
     const handleObjectChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value, type, checked } = e.target;
 
@@ -32,7 +43,7 @@ function useObjectState<T extends object>(initialState: T) {
         setKeyValue(id as keyof T, newValue);
     };
 
-    return [state, setKeyValue, setState, handleObjectChange] as const;
-}
+    return [state, setKeyValue, setMultipleValues, resetState, handleObjectChange] as const;
+};
 
 export default useObjectState;
