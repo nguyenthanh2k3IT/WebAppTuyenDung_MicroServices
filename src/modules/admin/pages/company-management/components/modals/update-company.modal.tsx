@@ -63,7 +63,7 @@ const UpdateCompanyModal: React.FC = () => {
     useEffect(() => {
         const fetchSizes = async () => {
             try {
-                const res = await API.get('/api/Size');
+                const res = await API.get('/identity-service/api/Size');
                 if (res.data && res.data.succeeded) {
                     setSizes(res.data.data);
                 } else {
@@ -77,7 +77,7 @@ const UpdateCompanyModal: React.FC = () => {
 
         const fetchProvinces = async () => {
             try {
-                const res = await API.get('/api/Province');
+                const res = await API.get('/identity-service/api/Province');
                 if (res.data && res.data.succeeded) {
                     setProvinces(res.data.data);
                 } else {
@@ -97,7 +97,7 @@ const UpdateCompanyModal: React.FC = () => {
         if (modalState?.data?.id) {
             const fetchCompany = async () => {
                 try {
-                    const res = await API.get(`/api/Company/${modalState.data.id}`);
+                    const res = await API.get(`/identity-service/api/Company/${modalState.data.id}`);
                     const obj: ApiRes<UpdateCompanyInfo> = res.data;
                     if (obj.data) {
                         setMultipleValues(obj.data);
@@ -150,7 +150,7 @@ const UpdateCompanyModal: React.FC = () => {
     const handleUpdateCompany = async () => {
         if (validateForm()) {
             const result = await callApi(
-                '/api/Company',
+                '/identity-service/api/Company',
                 {
                     method: 'PUT',
                     body: updateCompanyInfo,

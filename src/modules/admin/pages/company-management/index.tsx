@@ -93,7 +93,7 @@ function CompanyManagement() {
         const payload = {
             ids: [dialogs.deleteCompany.data.id],
         };
-        const result = await callApi('/api/Company', {
+        const result = await callApi('/identity-service/api/Company', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ function CompanyManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/api/Company/pagination"
+                    api="/identity-service/api/Company/pagination"
                     ref={tableRef}
                     selectKey={'id'}
                     deleteApi="/api/Company"

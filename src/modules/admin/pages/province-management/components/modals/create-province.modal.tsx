@@ -61,7 +61,7 @@ const CreateProvinceModal: React.FC = () => {
     const handleCreateProvince = async () => {
         if (validateForm()) {
             const result = await callApi(
-                '/api/Province',
+                '/identity-service/api/Province',
                 {
                     method: 'POST',
                     body: createProvinceInfo,

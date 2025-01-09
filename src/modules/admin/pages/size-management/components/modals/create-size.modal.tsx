@@ -47,7 +47,7 @@ const CreateSizeModal: React.FC = () => {
     const handleCreateSize = async () => {
         if (validateForm()) {
             const result = await callApi(
-                '/api/Size',
+                '/identity-service/api/Size',
                 {
                     method: 'POST',
                     body: createSizeInfo,

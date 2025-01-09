@@ -109,7 +109,7 @@ function ProvinceManagement() {
         const payload = {
             ids: [dialogs.deleteProvince.data.id],
         };
-        const result = await callApi('/api/Province', {
+        const result = await callApi('/identity-service/api/Province', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,10 +144,10 @@ function ProvinceManagement() {
                     columns={columns}
                     param={tableParams}
                     // filter={filterComponent()}
-                    api="/api/Province/pagination"
+                    api="/identity-service/api/Province/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/api/Province"
+                    deleteApi="/identity-service/api/Province"
                 />
             </div>
         </div>

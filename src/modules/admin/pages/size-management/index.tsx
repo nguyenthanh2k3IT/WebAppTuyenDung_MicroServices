@@ -81,7 +81,7 @@ function SizeManagement() {
         const payload = {
             ids: [dialogs.deleteSize.data.id],
         };
-        const result = await callApi('/api/Size', {
+        const result = await callApi('/identity-service/api/Size', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,10 +115,10 @@ function SizeManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/api/Size/pagination"
+                    api="/identity-service/api/Size/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/api/Size"
+                    deleteApi="/identity-service/api/Size"
                 />
             </div>
         </div>

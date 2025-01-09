@@ -61,7 +61,7 @@ const UpdateProvinceModal: React.FC = () => {
     const handleUpdateProvince = async () => {
         if (validateForm()) {
             const result = await callApi(
-                '/api/Province',
+                '/identity-service/api/Province',
                 {
                     method: 'PUT',
                     body: { ...updateProvinceInfo, id: modalState.data.id },

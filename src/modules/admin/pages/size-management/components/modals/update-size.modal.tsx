@@ -29,7 +29,7 @@ const UpdateSizeModal: React.FC = () => {
         if (modalState?.data?.id) {
             const fetchSize = async () => {
                 try {
-                    const res = await API.get(`/api/Size/${modalState.data.id}`);
+                    const res = await API.get(`/identity-service/api/Size/${modalState.data.id}`);
                     const obj: ApiRes<UpdateSizeInfo> = res.data;
                     if (obj.data) {
                         setMultipleValues(obj.data); // Sử dụng setMultipleValues để cập nhật nhiều giá trị cùng lúc
@@ -64,7 +64,7 @@ const UpdateSizeModal: React.FC = () => {
     const handleUpdateSize = async () => {
         if (validateForm()) {
             const result = await callApi(
-                `/api/Size`,
+                `/identity-service/api/Size`,
                 {
                     method: 'PUT',
                     body: { ...updateSizeInfo, id: updateSizeInfo.id },

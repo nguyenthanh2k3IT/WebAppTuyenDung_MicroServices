@@ -61,7 +61,7 @@ const CreateCompanyModal: React.FC = () => {
     useEffect(() => {
         const fetchSizes = async () => {
             try {
-                const res = await API.get('/api/Size');
+                const res = await API.get('/identity-service/api/Size');
                 if (res.data && res.data.succeeded) {
                     setSizes(res.data.data);
                 } else {
@@ -75,7 +75,7 @@ const CreateCompanyModal: React.FC = () => {
 
         const fetchProvinces = async () => {
             try {
-                const res = await API.get('/api/Province');
+                const res = await API.get('/identity-service/api/Province');
                 if (res.data && res.data.succeeded) {
                     setProvinces(res.data.data);
                 } else {
@@ -128,7 +128,7 @@ const CreateCompanyModal: React.FC = () => {
     const handleCreateCompany = async () => {
         if (validateForm()) {
             const result = await callApi(
-                '/api/Company',
+                '/identity-service/api/Company',
                 {
                     method: 'POST',
                     body: createCompanyInfo,
