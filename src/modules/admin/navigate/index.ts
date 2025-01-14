@@ -23,4 +23,12 @@ export const AdminNavigate: NavigateType = {
         title: 'Company Management',
         link: '/admin/company',
     },
+    category: {
+        title: 'Category Management',
+        link: '/admin/category',
+    },
+    tagname: {
+        title: 'Tagname Management',
+        link: '/admin/tagname',
+    },
 };

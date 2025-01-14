@@ -39,8 +39,8 @@ const accordionItems = [
         icon: FileText,
         links: [
             { to: '/', label: 'Bài viết', icon: FileText },
-            { to: '/', label: 'Thể loại', icon: Tag },
-            { to: '/', label: 'Thẻ', icon: Percent },
+            { to: '/admin/category', label: 'Thể loại', icon: Tag },
+            { to: '/admin/tagname', label: 'Thẻ', icon: Percent },
         ],
     },
     {

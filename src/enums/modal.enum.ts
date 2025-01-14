@@ -8,4 +8,8 @@ export enum ModalType {
     UpdateSize = 'UpdateSize',
     CreateCompany = 'CreateCompany',
     UpdateCompany = 'UpdateCompany',
+    CreateCategory = 'CreateCategory',
+    UpdateCategory = 'UpdateCategory',
+    CreateTagname = 'CreateTagname',
+    UpdateTagname = 'UpdateTagname',
 }
