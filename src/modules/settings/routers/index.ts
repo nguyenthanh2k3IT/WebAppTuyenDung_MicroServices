@@ -3,7 +3,7 @@ import SettingPage from '../pages';
 
 export const SettingRoutes: Route[] = [
     {
-        path: '/settings',
+        path: '/cai-dat',
         title: 'Cài đặt',
         page: SettingPage,
         layout: MainLayout,

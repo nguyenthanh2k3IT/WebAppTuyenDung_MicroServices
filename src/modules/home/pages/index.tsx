@@ -6,7 +6,7 @@ import LatestBlog from '../components/latest-blog';
 
 function HomePage() {
     return (
-        <div className="mx-auto max-w-[1290px]">
+        <div className="wrapper">
             <Banner />
             <SearchBar />
             <LatestJobs />

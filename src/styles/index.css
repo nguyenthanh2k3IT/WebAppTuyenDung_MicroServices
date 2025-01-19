@@ -6,6 +6,14 @@
     @apply px-4 sm:px-6 lg:px-24;
 }
 
+.select-trigger {
+    @apply !border-gray-400 shadow-sm;
+}
+
+.wrapper {
+    @apply mx-auto max-w-[1290px] bg-content-primary;
+}
+
 .sm-border {
     @apply rounded-lg border-2;
 }
