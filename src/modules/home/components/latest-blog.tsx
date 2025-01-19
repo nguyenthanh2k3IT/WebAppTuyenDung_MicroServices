@@ -53,7 +53,7 @@ const LatestBlog = () => {
                         <div className="bg-[#1E2532] text-white p-6 group-hover:bg-app-primary-bold">
                             <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
                             <h4 className="text-app-primary group-hover:text-white mb-4">{post.subtitle}</h4>
-                            <p className="text-gray-300 text-sm">{post.description}</p>
+                            <p className="text-gray-300 text-sm group-hover:text-white">{post.description}</p>
                         </div>
                     </div>
                 ))}
