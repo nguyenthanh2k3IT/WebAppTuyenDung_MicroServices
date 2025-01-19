@@ -4,7 +4,7 @@ import JobList from './components/list';
 
 function JobPage() {
     return (
-        <div className="wrapper mb-12">
+        <div className="wrapper pb-12">
             {/* Banner Section */}
             <div className="relative w-full h-64 md:h-80 lg:h-96">
                 <img src={InnerBanner} alt="Job Banner" className="absolute inset-0 object-cover w-full h-full" />
