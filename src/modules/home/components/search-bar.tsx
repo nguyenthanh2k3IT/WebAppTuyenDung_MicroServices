@@ -5,7 +5,7 @@ import { Search } from 'lucide-react';
 
 const SearchBar = () => {
     return (
-        <div className="relative -mt-11 px-4 sm:px-6 lg:px-8">
+        <div className="relative -mt-11 content-padding">
             <div className="bg-app-primary rounded-full py-6 px-8">
                 <div className="flex flex-col md:flex-row gap-4 items-center">
                     {/* Professional Input */}

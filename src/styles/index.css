@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.content-padding {
+    @apply px-4 sm:px-6 lg:px-24;
+}
+
 .sm-border {
     @apply rounded-lg border-2;
 }

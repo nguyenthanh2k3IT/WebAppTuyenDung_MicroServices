@@ -15,6 +15,7 @@ module.exports = {
             colors: {
                 'app-primary': '#1DA1F2',
                 'app-primary-bold': '#0077B5',
+                'content-primary': '#F7F7F7',
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',
                 ring: 'hsl(var(--ring))',

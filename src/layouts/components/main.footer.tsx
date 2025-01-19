@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Facebook, Twitter, Linkedin, Youtube, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import footerBg from '@/assets/images/footer-bg.jpg';
+import WebTitle from '@/components/label/web-title.label';
 
 const companyLinks = [
     { title: 'About Us', href: '/about' },
@@ -23,7 +24,7 @@ const quickLinks = [
 function MainFooter() {
     return (
         <footer
-            className="relative bg-[#1E2532] bg-cover bg-center bg-no-repeat text-white"
+            className="relative bg-[#1E2532] bg-cover bg-center bg-no-repeat text-white content-padding"
             style={{ backgroundImage: `url(${footerBg})` }}
         >
             {/* Top Section */}
@@ -92,11 +93,14 @@ function MainFooter() {
                 <div className="container mx-auto px-4 py-12">
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                         {/* Logo and Description */}
-                        <div className="md:col-span-2">
-                            <h2 className="text-2xl font-bold mb-4">
-                                Recruite<span className="text-[#1DA1F2]">Pro</span>
-                            </h2>
-                            <p className="text-gray-400 max-w-xl">
+                        <div className="md:col-span-2 pr-8">
+                            <WebTitle className="mb-4" />
+                            <p className="text-gray-400 max-w-xl text-justify mb-2">
+                                Duis ac turpis. Integer rutrum ante eu lacus. Vestibulum libero nisl, porta vel,
+                                scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursus leo vel metus.
+                                Nulla facilisi.
+                            </p>
+                            <p className="text-gray-400 max-w-xl text-justify">
                                 Duis ac turpis. Integer rutrum ante eu lacus. Vestibulum libero nisl, porta vel,
                                 scelerisque eget, malesuada at, neque. Vivamus eget nibh. Etiam cursus leo vel metus.
                                 Nulla facilisi.
