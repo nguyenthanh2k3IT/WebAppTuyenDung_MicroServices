@@ -31,4 +31,8 @@ export const AdminNavigate: NavigateType = {
         title: 'Tagname Management',
         link: '/admin/tagname',
     },
+    post: {
+        title: 'Post Management',
+        link: '/admin/post',
+    },
 };

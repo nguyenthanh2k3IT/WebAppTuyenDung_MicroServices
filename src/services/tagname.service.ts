@@ -1,6 +1,6 @@
 import { API } from '@/utils/axios';
 
-export default class tagnameService {
+export default class TagnameService {
     static async getAll(): Promise<Tagname[]> {
         try {
             const res = await API.get('/blog-service/api/Categories');

@@ -6,3 +6,4 @@ export { default as SizeManagement } from './size-management';
 export { default as CompanyManagement } from './company-management';
 export { default as CategoryManagement } from './category-management';
 export { default as TagnameManagement } from './tagname-management';
+export { default as PostManagement } from './post-management';
