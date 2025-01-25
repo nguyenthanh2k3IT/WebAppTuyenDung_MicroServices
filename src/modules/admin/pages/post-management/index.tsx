@@ -68,13 +68,7 @@ function PostManagement() {
                             onClick={() => navigate(`/admin/post/update?id=${row.original.id}`)}
                             className="py-1 px-2"
                         />
-                        <CustomButton
-                            onClick={() => handleOpenDialog(row.original.id)}
-                            className="py-1 px-2 bg-red-500 text-white hover:bg-red-600"
-                            hoverContent={`Delete post`}
-                        >
-                            Xóa
-                        </CustomButton>
+                        
                         <CustomButton
                             onClick={() => navigate(`/admin/post/preview?id=${row.original.id}`)}
                             className="py-1 px-2 bg-blue-500 text-white hover:bg-blue-600"

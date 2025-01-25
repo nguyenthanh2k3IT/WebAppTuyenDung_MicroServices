@@ -48,11 +48,12 @@ const accordionItems = [
         title: 'Quản lý công việc',
         icon: Briefcase,
         links: [
-            { to: '/', label: 'Công việc', icon: Briefcase },
-            { to: '/', label: 'Hình thức làm việc', icon: Layers },
-            { to: '/', label: 'Kinh nghiệm', icon: Palette },
-            { to: '/', label: 'Cấp bậc', icon: Package },
-            { to: '/', label: 'Giới tính', icon: Users },
+            { to: '/admin/job', label: 'Công việc', icon: Briefcase },
+            { to: '/admin/worktype', label: 'Hình thức làm việc', icon: Layers },
+            { to: '/admin/experience', label: 'Kinh nghiệm', icon: Palette },
+            { to: '/admin/job-category', label: 'Lĩnh vực', icon: Percent },
+            { to: '/admin/rank', label: 'Cấp bậc', icon: Package },
+            { to: '/admin/gender', label: 'Giới tính', icon: Users },
         ],
     },
 ];

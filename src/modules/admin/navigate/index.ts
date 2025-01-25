@@ -35,4 +35,28 @@ export const AdminNavigate: NavigateType = {
         title: 'Post Management',
         link: '/admin/post',
     },
+    job: {
+        title: 'Job Management',
+        link: '/admin/job',
+    },
+    worktype: {
+        title: 'WorkType Management',
+        link: '/admin/worktype',
+    },
+    experience: {
+        title: 'Experience Management',
+        link: '/admin/experience',
+    },
+    jobCategory: {
+        title: 'Job Category Management',
+        link: '/admin/job-category',
+    },
+    rank: {
+        title: 'Rank Management',
+        link: '/admin/rank',
+    },
+    gender: {
+        title: 'Gender Management',
+        link: '/admin/gender',
+    },
 };

@@ -1,7 +1,7 @@
 import AuthLayout from '@/modules/auth/layout/auth.layout';
 import AdminLayout from '../layout/index';
 import { AdminNavigate } from '../navigate';
-import { AdminLogin, Dashboard, UserManagement, ProvinceManagement, SizeManagement, CompanyManagement, CategoryManagement, TagnameManagement, PostManagement } from '../pages';
+import { AdminLogin, Dashboard, UserManagement, ProvinceManagement, SizeManagement, CompanyManagement, CategoryManagement, TagnameManagement, PostManagement, JobManagement, WorkTypeManagement, ExperienceManagement, RankManagement, JobCategoryManagement, GenderManagement } from '../pages';
 import PostPreview from '../pages/post-management/PostPreview';
 import PostCreate from '../pages/post-management/PostCreate';
 import PostUpdate from '../pages/post-management/PostUpdate';
@@ -85,4 +85,40 @@ export const AdminRoutes: Route[] = [
         page: PostUpdate,
         layout: AdminLayout,
     },
+    {
+        path: AdminNavigate.job.link,
+        title: AdminNavigate.job.title,
+        page: JobManagement,
+        layout: AdminLayout, 
+    },
+    {
+        path: AdminNavigate.worktype.link,
+        title: AdminNavigate.worktype.title,
+        page: WorkTypeManagement,
+        layout: AdminLayout,
+    },
+    {
+        path: AdminNavigate.experience.link,
+        title: AdminNavigate.experience.title,
+        page: ExperienceManagement,
+        layout: AdminLayout,
+    },
+    {
+        path: AdminNavigate.jobCategory.link,
+        title: AdminNavigate.jobCategory.title,
+        page: JobCategoryManagement,
+        layout: AdminLayout,
+    },
+    {
+        path: AdminNavigate.rank.link,
+        title: AdminNavigate.rank.title,
+        page: RankManagement,
+        layout: AdminLayout,
+    },
+    {
+        path: AdminNavigate.gender.link,
+        title: AdminNavigate.gender.title,
+        page: GenderManagement,
+        layout: AdminLayout,
+    }
 ];

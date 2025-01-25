@@ -3,12 +3,12 @@ import useTableRef from '@/hooks/useTableRef';
 import { ColumnDef } from '@tanstack/react-table';
 import ColumnSelect from '@/components/table/column-select';
 import { DataTable } from '@/components/table/data-table';
-import EditButton from '@/components/button/edit.button';
-import AddButton from '@/components/button/add.button';
 import CustomButton from '@/components/button/custom.button';
-import CategoryManagementBreadcrumb from './components/breadcrumb';
-import CreateCategoryModal from './components/modals/create-category.modal';
-import UpdateCategoryModal from './components/modals/update-category.modal';
+import AddButton from '@/components/button/add.button';
+import EditButton from '@/components/button/edit.button';
+import ExperienceManagementBreadcrumb from './components/breadcrumb';
+import CreateExperienceModal from './components/modals/create-experience.modal';
+import UpdateExperienceModal from './components/modals/update-experience.modal';
 import useModalContext from '@/hooks/useModal';
 import { ModalType } from '@/enums/modal.enum';
 import ConfirmDialog from '@/components/dialog/confirm.dialog';
@@ -16,29 +16,29 @@ import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
 
-function CategoryManagement() {
+function ExperienceManagement() {
     const { toast } = useToast();
     const { callApi } = useCaller<any>();
     const { openModal } = useModalContext();
-    const { dialogs, openDialog, closeDialog } = useDialog(['deleteCategory']);
+    const { dialogs, openDialog, closeDialog } = useDialog(['deleteExperience']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
         name: '',
     });
 
     const handleOpenDialog = useCallback((id: string) => {
-        openDialog('deleteCategory', { id });
+        openDialog('deleteExperience', { id });
     }, []);
 
-    const columns = useMemo<ColumnDef<Category>[]>(() => [
-        ColumnSelect<Category>(),
+    const columns = useMemo<ColumnDef<Experience>[]>(() => [
+        ColumnSelect<Experience>(),
         {
             accessorKey: 'slug',
             header: 'Slug',
         },
         {
             accessorKey: 'name',
-            header: 'Tên loại',
+            header: 'Tên kinh nghiệm',
         },
         {
             id: 'actions',
@@ -47,10 +47,9 @@ function CategoryManagement() {
                 return (
                     <div className="flex space-x-2">
                         <EditButton
-                            onClick={() => openModal(ModalType.UpdateCategory, row.original, onFetch)}
+                            onClick={() => openModal(ModalType.UpdateExperience, row.original, onFetch)}
                             className="py-1 px-2"
-                        />
-                        
+                        />                       
                     </div>
                 );
             },
@@ -63,19 +62,19 @@ function CategoryManagement() {
         ...filter,
     }), [filter]);
 
-    const handleDeleteCategory = useCallback(async () => {
-        if (!dialogs.deleteCategory.data) {
+    const handleDeleteExperience = useCallback(async () => {
+        if (!dialogs.deleteExperience.data) {
             toast({
                 title: 'Failed',
-                description: 'Xóa loại thất bại',
+                description: 'Xóa kinh nghiệm thất bại',
                 variant: 'destructive',
             });
             return;
         }
         const payload = {
-            ids: [dialogs.deleteCategory.data.id],
+            ids: [dialogs.deleteExperience.data.id],
         };
-        const result = await callApi('/blog-service/api/Categories', {
+        const result = await callApi('/job-service/api/Experience', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,23 +83,24 @@ function CategoryManagement() {
         });
         if (result.succeeded) {
             onFetch();
-        }
-    }, [dialogs.deleteCategory.data]);
+        closeDialog('deleteExperience'); // Ensure dialog is closed after successful deletion
+    }
+}, [dialogs.deleteExperience.data, callApi, onFetch, toast, closeDialog]);
 
     return (
         <div className="h-fit">
             <ConfirmDialog
-                visible={dialogs.deleteCategory.visible}
-                closeModal={() => closeDialog('deleteCategory')}
-                onSubmit={handleDeleteCategory}
+                visible={dialogs.deleteExperience.visible}
+                closeModal={() => closeDialog('deleteExperience')}
+                onSubmit={handleDeleteExperience}
             />
-            <CreateCategoryModal />
-            <UpdateCategoryModal />
+            <CreateExperienceModal />
+            <UpdateExperienceModal />
             <div className="flex justify-between items-center">
-                <CategoryManagementBreadcrumb />
+                <ExperienceManagementBreadcrumb />
                 <AddButton
-                    hoverContent="Tạo mới loại"
-                    onClick={() => openModal(ModalType.CreateCategory, null, onFetch)}
+                    hoverContent="Tạo mới kinh nghiệm"
+                    onClick={() => openModal(ModalType.CreateExperience, null, onFetch)}
                 >
                     Create
                 </AddButton>
@@ -109,14 +109,14 @@ function CategoryManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/blog-service/api/Categories/pagination"
+                    api="/job-service/api/Experience/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/identity-service/api/Categories"
+                    deleteApi="/job-service/api/Experience"
                 />
             </div>
         </div>
     );
 }
 
-export default memo(CategoryManagement);
+export default memo(ExperienceManagement);

@@ -46,4 +46,5 @@ function useObjectState<T extends object>(initialState: T) {
     return [state, setKeyValue, setMultipleValues, resetState, handleObjectChange] as const;
 };
 
+
 export default useObjectState;
