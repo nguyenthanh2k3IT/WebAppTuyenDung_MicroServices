@@ -1,14 +1,14 @@
 export const AuthNavigate: NavigateType = {
     login: {
         title: 'Đăng nhập',
-        link: '/auth/login',
+        link: '/auth/dang-nhap',
     },
     forgetPassword: {
         title: 'Quên mật khẩu',
-        link: '/auth/forget-password',
+        link: '/auth/quen-mat-khau',
     },
     register: {
         title: 'Đăng kí',
-        link: '/auth/register',
+        link: '/auth/dang-ky',
     },
 };

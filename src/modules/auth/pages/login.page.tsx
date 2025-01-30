@@ -1,124 +1,96 @@
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { AuthNavigate } from '../navigate';
-import useCaller from '@/hooks/useCaller';
-import { setToken } from '@/helpers/storage.helper';
-import LoadingButton from '@/components/ui/loading-button';
+import background from '@/assets/images/auth.png';
+import logo from '@/assets/images/logo.png';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import WebTitle from '@/components/label/web-title.label';
 
 function LoginPage() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({ email: '', password: '' });
-    const { loading, callApi } = useCaller<Authentication>();
+    const [rememberMe, setRememberMe] = useState(false);
 
-    const validateForm = () => {
-        let isValid = true;
-        const newErrors = { email: '', password: '' };
-
-        if (!email) {
-            newErrors.email = 'Email is required';
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(email)) {
-            newErrors.email = 'Email is invalid';
-            isValid = false;
-        }
-
-        if (!password) {
-            newErrors.password = 'Password is required';
-            isValid = false;
-        } else if (password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters';
-            isValid = false;
-        }
-
-        setErrors(newErrors);
-        return isValid;
-    };
-
-    const handleLogin = async () => {
-        if (!validateForm()) return;
-
-        const result = await callApi(
-            '/identity-service/api/Auth/login',
-            {
-                method: 'POST',
-                body: { email, password },
-            },
-            'Login Success',
-        );
-
-        if (result.data) {
-            setToken(result.data);
-            setTimeout(() => {
-                window.location.href = '/';
-            }, 1500);
-        }
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Handle login logic here
     };
 
     return (
-        <Card className="w-full max-w-md">
-            <CardHeader>
-                <div className="flex justify-between mb-4 border-b">
-                    <Link
-                        to={AuthNavigate.register.link}
-                        className="w-1/2 text-center py-2 text-sm font-medium text-gray-500 hover:text-gray-700"
-                    >
-                        REGISTER
-                    </Link>
-                    <div className="w-1/2 text-center py-2 text-sm font-medium text-gray-900 border-b-2 border-blue-500">
-                        SIGN IN
-                    </div>
-                </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
+        <div className="w-full max-w-[480px] bg-white rounded-2xl p-8 shadow-lg z-10">
+            {/* Logo */}
+            <Link to="/" className=" mb-8 text-center">
+                <WebTitle />
+            </Link>
+
+            {/* Title */}
+            <div className="text-center mb-8 mt-4">
+                <p className="text-gray-600">Vui lòng nhập tên tài khoản và mật khẩu để tiếp tục.</p>
+            </div>
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                    <label htmlFor="email" className="text-sm font-medium">
-                        EMAIL ADDRESS:
-                    </label>
+                    <Label htmlFor="email">Tên đăng nhập:</Label>
                     <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        id="username"
+                        type="text"
+                        placeholder="Nhập tên đăng nhập..."
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="h-12"
+                        required
                     />
-                    {errors.email && <p className="text-red-500 text-xs">{errors.email}</p>}
                 </div>
+
                 <div className="space-y-2">
-                    <label htmlFor="password" className="text-sm font-medium">
-                        PASSWORD:
-                    </label>
+                    <div className="flex justify-between items-center">
+                        <Label htmlFor="password">Mật khẩu</Label>
+                        <Link to="/auth/quen-mat-khau" className="text-sm text-app-primary hover:underline">
+                            Quên mật khẩu?
+                        </Link>
+                    </div>
                     <Input
                         id="password"
                         type="password"
-                        placeholder="Enter your password"
+                        placeholder="Nhập mật khẩu..."
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                handleLogin();
-                            }
-                        }}
+                        className="h-12"
+                        required
                     />
-                    {errors.password && <p className="text-red-500 text-xs">{errors.password}</p>}
                 </div>
-            </CardContent>
-            <CardFooter className="flex flex-col items-center">
-                <LoadingButton
-                    className="w-full"
-                    onClick={handleLogin}
-                    isLoading={loading}
-                    loadingText="Please wait a few minutes ..."
-                >
-                    SIGN IN
-                </LoadingButton>
-                <Link to={AuthNavigate.forgetPassword.link} className="text-sm text-blue-600 hover:underline mt-4">
-                    Forgot password?
-                </Link>
-            </CardFooter>
-        </Card>
+
+                <div className="flex items-center space-x-2">
+                    <Checkbox
+                        id="remember"
+                        checked={rememberMe}
+                        onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                    />
+                    <label
+                        htmlFor="remember"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                        Ghi nhớ tôi
+                    </label>
+                </div>
+
+                <Button type="submit" className="w-full h-12 text-base bg-app-primary hover:bg-app-primary-hover">
+                    ĐĂNG NHẬP
+                </Button>
+                <div className="text-base flex items-center gap-1 justify-center">
+                    <p>Chưa có tài khoản?</p>
+                    <Link
+                        to="/auth/dang-ki"
+                        className="font-semibold text-gray-700 hover:text-black transition cursor-pointer"
+                    >
+                        Đăng ký ngay
+                    </Link>
+                </div>
+            </form>
+        </div>
     );
 }
 
