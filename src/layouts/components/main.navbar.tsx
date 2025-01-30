@@ -40,7 +40,7 @@ function MainNavbar() {
 
     return (
         <div className="w-full sticky top-0 z-20 bg-white shadow-md">
-            <div className="max-w-[1290px] mx-auto content-padding">
+            <div className="max-w-[1920px] mx-auto content-padding">
                 <div className="flex items-center justify-between h-16 ">
                     {/* Logo */}
                     <Link to="/" className="flex-shrink-0">

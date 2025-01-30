@@ -11,7 +11,7 @@
 }
 
 .wrapper {
-    @apply mx-auto max-w-[1290px] bg-content-primary;
+    @apply mx-auto max-w-[1920px] bg-content-primary;
 }
 
 .sm-border {
