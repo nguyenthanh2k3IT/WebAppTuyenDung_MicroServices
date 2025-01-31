@@ -20,17 +20,12 @@ function LoginPage() {
 
     return (
         <div className="w-full max-w-[480px] bg-white rounded-2xl p-8 shadow-lg z-10">
-            {/* Logo */}
             <Link to="/" className=" mb-8 text-center">
                 <WebTitle />
             </Link>
-
-            {/* Title */}
             <div className="text-center mb-8 mt-4">
                 <p className="text-gray-600">Vui lòng nhập tên tài khoản và mật khẩu để tiếp tục.</p>
             </div>
-
-            {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                     <Label htmlFor="email">Tên đăng nhập:</Label>
@@ -83,7 +78,7 @@ function LoginPage() {
                 <div className="text-base flex items-center gap-1 justify-center">
                     <p>Chưa có tài khoản?</p>
                     <Link
-                        to="/auth/dang-ki"
+                        to="/auth/dang-ky"
                         className="font-semibold text-gray-700 hover:text-black transition cursor-pointer"
                     >
                         Đăng ký ngay
