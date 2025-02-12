@@ -6,39 +6,57 @@ import { DataTable } from '@/components/table/data-table';
 import EditButton from '@/components/button/edit.button';
 import AddButton from '@/components/button/add.button';
 import CustomButton from '@/components/button/custom.button';
-import CategoryManagementBreadcrumb from './components/breadcrumb';
-import CreateCategoryModal from './components/modals/create-category.modal';
-import UpdateCategoryModal from './components/modals/update-category.modal';
+import PostManagementBreadcrumb from './components/breadcrumb';
 import useModalContext from '@/hooks/useModal';
 import { ModalType } from '@/enums/modal.enum';
 import ConfirmDialog from '@/components/dialog/confirm.dialog';
 import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
+import { Post } from '@/types/identity/post';
 
-function CategoryManagement() {
+function PostManagement() {
+    const navigate = useNavigate();
     const { toast } = useToast();
     const { callApi } = useCaller<any>();
-    const { openModal } = useModalContext();
-    const { dialogs, openDialog, closeDialog } = useDialog(['deleteCategory']);
+    const { dialogs, openDialog, closeDialog } = useDialog(['deletePost']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
-        name: '',
+        title: '',
     });
 
     const handleOpenDialog = useCallback((id: string) => {
-        openDialog('deleteCategory', { id });
+        openDialog('deletePost', { id });
     }, []);
 
-    const columns = useMemo<ColumnDef<Category>[]>(() => [
-        ColumnSelect<Category>(),
+    const columns = useMemo<ColumnDef<Post>[]>(() => [
+        ColumnSelect<Post>(),
         {
-            accessorKey: 'slug',
-            header: 'Slug',
+            accessorKey: 'image',
+            header: 'Ảnh bìa',
+            cell: ({ row }) => <img src={row.original.image} alt={row.original.title} className="w-16 h-16 object-cover" />,
         },
         {
-            accessorKey: 'name',
-            header: 'Tên loại',
+            accessorKey: 'slug',
+            header: 'Mã bài viết',
+        },
+        {
+            accessorKey: 'title',
+            header: 'Tiêu đề',
+        },
+        {
+            accessorKey: 'category.name',
+            header: 'Thể loại',
+        },
+        {
+            accessorKey: 'status.name',
+            header: 'Trạng thái',
+        },
+        {
+            accessorKey: 'tagNames',
+            header: 'Thẻ bài viết',
+            cell: ({ row }) => row.original.tagNames.map(tag => tag.name).join(', '),
         },
         {
             id: 'actions',
@@ -47,10 +65,17 @@ function CategoryManagement() {
                 return (
                     <div className="flex space-x-2">
                         <EditButton
-                            onClick={() => openModal(ModalType.UpdateCategory, row.original, onFetch)}
+                            onClick={() => navigate(`/admin/post/update?id=${row.original.id}`)}
                             className="py-1 px-2"
                         />
                         
+                        <CustomButton
+                            onClick={() => navigate(`/admin/post/preview?id=${row.original.id}`)}
+                            className="py-1 px-2 bg-blue-500 text-white hover:bg-blue-600"
+                            hoverContent={`View post`}
+                        >
+                            Xem
+                        </CustomButton>
                     </div>
                 );
             },
@@ -63,19 +88,19 @@ function CategoryManagement() {
         ...filter,
     }), [filter]);
 
-    const handleDeleteCategory = useCallback(async () => {
-        if (!dialogs.deleteCategory.data) {
+    const handleDeletePost = useCallback(async () => {
+        if (!dialogs.deletePost.data) {
             toast({
                 title: 'Failed',
-                description: 'Xóa loại thất bại',
+                description: 'Xóa bài viết thất bại',
                 variant: 'destructive',
             });
             return;
         }
         const payload = {
-            ids: [dialogs.deleteCategory.data.id],
+            ids: [dialogs.deletePost.data.id],
         };
-        const result = await callApi('/blog-service/api/Categories', {
+        const result = await callApi('/blog-service/api/Post', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -85,22 +110,20 @@ function CategoryManagement() {
         if (result.succeeded) {
             onFetch();
         }
-    }, [dialogs.deleteCategory.data]);
+    }, [dialogs.deletePost.data]);
 
     return (
         <div className="h-fit">
             <ConfirmDialog
-                visible={dialogs.deleteCategory.visible}
-                closeModal={() => closeDialog('deleteCategory')}
-                onSubmit={handleDeleteCategory}
+                visible={dialogs.deletePost.visible}
+                closeModal={() => closeDialog('deletePost')}
+                onSubmit={handleDeletePost}
             />
-            <CreateCategoryModal />
-            <UpdateCategoryModal />
             <div className="flex justify-between items-center">
-                <CategoryManagementBreadcrumb />
+                <PostManagementBreadcrumb />
                 <AddButton
-                    hoverContent="Tạo mới loại"
-                    onClick={() => openModal(ModalType.CreateCategory, null, onFetch)}
+                    hoverContent="Tạo mới bài viết"
+                    onClick={() => navigate('/admin/post/create')}
                 >
                     Create
                 </AddButton>
@@ -109,14 +132,14 @@ function CategoryManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/blog-service/api/Categories/pagination"
+                    api="/blog-service/api/Post/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/identity-service/api/Categories"
+                    deleteApi="/blog-service/api/Post"
                 />
             </div>
         </div>
     );
 }
 
-export default memo(CategoryManagement);
+export default memo(PostManagement);

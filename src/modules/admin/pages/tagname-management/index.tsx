@@ -50,13 +50,6 @@ function TagnameManagement() {
                             onClick={() => openModal(ModalType.UpdateTagname, row.original, onFetch)}
                             className="py-1 px-2"
                         />
-                        <CustomButton
-                            onClick={() => handleOpenDialog(row.original.id)}
-                            className="py-1 px-2 bg-red-500 text-white hover:bg-red-600"
-                            hoverContent={`Delete tagname`}
-                        >
-                            Xóa
-                        </CustomButton>
                     </div>
                 );
             },

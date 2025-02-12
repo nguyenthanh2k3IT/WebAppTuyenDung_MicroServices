@@ -3,42 +3,42 @@ import useTableRef from '@/hooks/useTableRef';
 import { ColumnDef } from '@tanstack/react-table';
 import ColumnSelect from '@/components/table/column-select';
 import { DataTable } from '@/components/table/data-table';
-import EditButton from '@/components/button/edit.button';
-import AddButton from '@/components/button/add.button';
 import CustomButton from '@/components/button/custom.button';
-import CategoryManagementBreadcrumb from './components/breadcrumb';
-import CreateCategoryModal from './components/modals/create-category.modal';
-import UpdateCategoryModal from './components/modals/update-category.modal';
+import AddButton from '@/components/button/add.button';
+import EditButton from '@/components/button/edit.button';
+import CreateGenderModal from './component/modals/create-gender.modal';
+import UpdateGenderModal from './component/modals/update-gender.modal';
 import useModalContext from '@/hooks/useModal';
 import { ModalType } from '@/enums/modal.enum';
 import ConfirmDialog from '@/components/dialog/confirm.dialog';
 import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
+import GenderManagementBreadcrumb from './component/breadcrumb';
 
-function CategoryManagement() {
+function GenderManagement() {
     const { toast } = useToast();
     const { callApi } = useCaller<any>();
     const { openModal } = useModalContext();
-    const { dialogs, openDialog, closeDialog } = useDialog(['deleteCategory']);
+    const { dialogs, openDialog, closeDialog } = useDialog(['deleteGender']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
         name: '',
     });
 
     const handleOpenDialog = useCallback((id: string) => {
-        openDialog('deleteCategory', { id });
+        openDialog('deleteGender', { id });
     }, []);
 
-    const columns = useMemo<ColumnDef<Category>[]>(() => [
-        ColumnSelect<Category>(),
+    const columns = useMemo<ColumnDef<Gender>[]>(() => [
+        ColumnSelect<Gender>(),
         {
             accessorKey: 'slug',
             header: 'Slug',
         },
         {
             accessorKey: 'name',
-            header: 'Tên loại',
+            header: 'Tên giới tính',
         },
         {
             id: 'actions',
@@ -47,10 +47,9 @@ function CategoryManagement() {
                 return (
                     <div className="flex space-x-2">
                         <EditButton
-                            onClick={() => openModal(ModalType.UpdateCategory, row.original, onFetch)}
+                            onClick={() => openModal(ModalType.UpdateGender, row.original, onFetch)}
                             className="py-1 px-2"
-                        />
-                        
+                        />                       
                     </div>
                 );
             },
@@ -63,19 +62,19 @@ function CategoryManagement() {
         ...filter,
     }), [filter]);
 
-    const handleDeleteCategory = useCallback(async () => {
-        if (!dialogs.deleteCategory.data) {
+    const handleDeleteGender = useCallback(async () => {
+        if (!dialogs.deleteGender.data) {
             toast({
                 title: 'Failed',
-                description: 'Xóa loại thất bại',
+                description: 'Xóa giới tính thất bại',
                 variant: 'destructive',
             });
             return;
         }
         const payload = {
-            ids: [dialogs.deleteCategory.data.id],
+            ids: [dialogs.deleteGender.data.id],
         };
-        const result = await callApi('/blog-service/api/Categories', {
+        const result = await callApi('/job-service/api/Gender', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,23 +83,24 @@ function CategoryManagement() {
         });
         if (result.succeeded) {
             onFetch();
-        }
-    }, [dialogs.deleteCategory.data]);
+        closeDialog('deleteGender'); // Ensure dialog is closed after successful deletion
+    }
+}, [dialogs.deleteGender.data, callApi, onFetch, toast, closeDialog]);
 
     return (
         <div className="h-fit">
             <ConfirmDialog
-                visible={dialogs.deleteCategory.visible}
-                closeModal={() => closeDialog('deleteCategory')}
-                onSubmit={handleDeleteCategory}
+                visible={dialogs.deleteGender.visible}
+                closeModal={() => closeDialog('deleteGender')}
+                onSubmit={handleDeleteGender}
             />
-            <CreateCategoryModal />
-            <UpdateCategoryModal />
+            <CreateGenderModal />
+            <UpdateGenderModal />
             <div className="flex justify-between items-center">
-                <CategoryManagementBreadcrumb />
+                <GenderManagementBreadcrumb />
                 <AddButton
-                    hoverContent="Tạo mới loại"
-                    onClick={() => openModal(ModalType.CreateCategory, null, onFetch)}
+                    hoverContent="Tạo mới giới tính"
+                    onClick={() => openModal(ModalType.CreateGender, null, onFetch)}
                 >
                     Create
                 </AddButton>
@@ -109,14 +109,15 @@ function CategoryManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/blog-service/api/Categories/pagination"
+                    api="/job-service/api/Gender/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/identity-service/api/Categories"
+                    deleteApi="/job-service/api/Gender"
                 />
             </div>
         </div>
     );
 }
 
-export default memo(CategoryManagement);
+export default memo(GenderManagement);
+

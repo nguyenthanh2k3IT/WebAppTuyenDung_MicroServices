@@ -3,42 +3,42 @@ import useTableRef from '@/hooks/useTableRef';
 import { ColumnDef } from '@tanstack/react-table';
 import ColumnSelect from '@/components/table/column-select';
 import { DataTable } from '@/components/table/data-table';
-import EditButton from '@/components/button/edit.button';
-import AddButton from '@/components/button/add.button';
 import CustomButton from '@/components/button/custom.button';
-import CategoryManagementBreadcrumb from './components/breadcrumb';
-import CreateCategoryModal from './components/modals/create-category.modal';
-import UpdateCategoryModal from './components/modals/update-category.modal';
+import AddButton from '@/components/button/add.button';
+import EditButton from '@/components/button/edit.button';
+import CreateRankModal from './components/modals/create-rank.modal';
+import UpdateRankModal from './components/modals/update-rank.modal';
 import useModalContext from '@/hooks/useModal';
 import { ModalType } from '@/enums/modal.enum';
 import ConfirmDialog from '@/components/dialog/confirm.dialog';
 import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
+import RankManagementBreadcrumb from './components/breadcrumb';
 
-function CategoryManagement() {
+function RankManagement() {
     const { toast } = useToast();
     const { callApi } = useCaller<any>();
     const { openModal } = useModalContext();
-    const { dialogs, openDialog, closeDialog } = useDialog(['deleteCategory']);
+    const { dialogs, openDialog, closeDialog } = useDialog(['deleteRank']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
         name: '',
     });
 
     const handleOpenDialog = useCallback((id: string) => {
-        openDialog('deleteCategory', { id });
+        openDialog('deleteRank', { id });
     }, []);
 
-    const columns = useMemo<ColumnDef<Category>[]>(() => [
-        ColumnSelect<Category>(),
+    const columns = useMemo<ColumnDef<Rank>[]>(() => [
+        ColumnSelect<Rank>(),
         {
             accessorKey: 'slug',
             header: 'Slug',
         },
         {
             accessorKey: 'name',
-            header: 'Tên loại',
+            header: 'Tên cấp bậc',
         },
         {
             id: 'actions',
@@ -47,10 +47,9 @@ function CategoryManagement() {
                 return (
                     <div className="flex space-x-2">
                         <EditButton
-                            onClick={() => openModal(ModalType.UpdateCategory, row.original, onFetch)}
+                            onClick={() => openModal(ModalType.UpdateRank, row.original, onFetch)}
                             className="py-1 px-2"
-                        />
-                        
+                        />                       
                     </div>
                 );
             },
@@ -63,19 +62,19 @@ function CategoryManagement() {
         ...filter,
     }), [filter]);
 
-    const handleDeleteCategory = useCallback(async () => {
-        if (!dialogs.deleteCategory.data) {
+    const handleDeleteRank = useCallback(async () => {
+        if (!dialogs.deleteRank.data) {
             toast({
                 title: 'Failed',
-                description: 'Xóa loại thất bại',
+                description: 'Xóa cấp bậc thất bại',
                 variant: 'destructive',
             });
             return;
         }
         const payload = {
-            ids: [dialogs.deleteCategory.data.id],
+            ids: [dialogs.deleteRank.data.id],
         };
-        const result = await callApi('/blog-service/api/Categories', {
+        const result = await callApi('/job-service/api/Rank', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,23 +83,24 @@ function CategoryManagement() {
         });
         if (result.succeeded) {
             onFetch();
-        }
-    }, [dialogs.deleteCategory.data]);
+        closeDialog('deleteRank'); // Ensure dialog is closed after successful deletion
+    }
+}, [dialogs.deleteRank.data, callApi, onFetch, toast, closeDialog]);
 
     return (
         <div className="h-fit">
             <ConfirmDialog
-                visible={dialogs.deleteCategory.visible}
-                closeModal={() => closeDialog('deleteCategory')}
-                onSubmit={handleDeleteCategory}
+                visible={dialogs.deleteRank.visible}
+                closeModal={() => closeDialog('deleteRank')}
+                onSubmit={handleDeleteRank}
             />
-            <CreateCategoryModal />
-            <UpdateCategoryModal />
+            <CreateRankModal />
+            <UpdateRankModal />
             <div className="flex justify-between items-center">
-                <CategoryManagementBreadcrumb />
+                <RankManagementBreadcrumb />
                 <AddButton
-                    hoverContent="Tạo mới loại"
-                    onClick={() => openModal(ModalType.CreateCategory, null, onFetch)}
+                    hoverContent="Tạo mới cấp bậc"
+                    onClick={() => openModal(ModalType.CreateRank, null, onFetch)}
                 >
                     Create
                 </AddButton>
@@ -109,14 +109,14 @@ function CategoryManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/blog-service/api/Categories/pagination"
+                    api="/job-service/api/Rank/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/identity-service/api/Categories"
+                    deleteApi="/job-service/api/Rank"
                 />
             </div>
         </div>
     );
 }
 
-export default memo(CategoryManagement);
+export default memo(RankManagement);

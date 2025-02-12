@@ -3,42 +3,42 @@ import useTableRef from '@/hooks/useTableRef';
 import { ColumnDef } from '@tanstack/react-table';
 import ColumnSelect from '@/components/table/column-select';
 import { DataTable } from '@/components/table/data-table';
-import EditButton from '@/components/button/edit.button';
-import AddButton from '@/components/button/add.button';
 import CustomButton from '@/components/button/custom.button';
-import CategoryManagementBreadcrumb from './components/breadcrumb';
-import CreateCategoryModal from './components/modals/create-category.modal';
-import UpdateCategoryModal from './components/modals/update-category.modal';
+import AddButton from '@/components/button/add.button';
+import EditButton from '@/components/button/edit.button';
+import CreateJobCategoryModal from './component/modals/create-category.modal';
+import UpdateJobCategoryModal from './component/modals/update-category.modal';
 import useModalContext from '@/hooks/useModal';
 import { ModalType } from '@/enums/modal.enum';
 import ConfirmDialog from '@/components/dialog/confirm.dialog';
 import useDialog from '@/hooks/useDialog';
 import useCaller from '@/hooks/useCaller';
 import { useToast } from '@/components/ui/use-toast';
+import JobCategoryManagementBreadcrumb from './component/breadcrumb';
 
-function CategoryManagement() {
+function JobCategoryManagement() {
     const { toast } = useToast();
     const { callApi } = useCaller<any>();
     const { openModal } = useModalContext();
-    const { dialogs, openDialog, closeDialog } = useDialog(['deleteCategory']);
+    const { dialogs, openDialog, closeDialog } = useDialog(['deleteJobCategory']);
     const { tableRef, onFetch } = useTableRef();
     const [filter, setFilter] = useState({
         name: '',
     });
 
     const handleOpenDialog = useCallback((id: string) => {
-        openDialog('deleteCategory', { id });
+        openDialog('deleteJobCategory', { id });
     }, []);
 
-    const columns = useMemo<ColumnDef<Category>[]>(() => [
-        ColumnSelect<Category>(),
+    const columns = useMemo<ColumnDef<JobCategory>[]>(() => [
+        ColumnSelect<JobCategory>(),
         {
             accessorKey: 'slug',
             header: 'Slug',
         },
         {
             accessorKey: 'name',
-            header: 'Tên loại',
+            header: 'Tên lĩnh vực',
         },
         {
             id: 'actions',
@@ -47,10 +47,9 @@ function CategoryManagement() {
                 return (
                     <div className="flex space-x-2">
                         <EditButton
-                            onClick={() => openModal(ModalType.UpdateCategory, row.original, onFetch)}
+                            onClick={() => openModal(ModalType.UpdateJobCategory, row.original, onFetch)}
                             className="py-1 px-2"
-                        />
-                        
+                        />                       
                     </div>
                 );
             },
@@ -63,19 +62,19 @@ function CategoryManagement() {
         ...filter,
     }), [filter]);
 
-    const handleDeleteCategory = useCallback(async () => {
-        if (!dialogs.deleteCategory.data) {
+    const handleDeleteJobCategory = useCallback(async () => {
+        if (!dialogs.deleteJobCategory.data) {
             toast({
                 title: 'Failed',
-                description: 'Xóa loại thất bại',
+                description: 'Xóa lĩnh vực thất bại',
                 variant: 'destructive',
             });
             return;
         }
         const payload = {
-            ids: [dialogs.deleteCategory.data.id],
+            ids: [dialogs.deleteJobCategory.data.id],
         };
-        const result = await callApi('/blog-service/api/Categories', {
+        const result = await callApi('/job-service/api/Category', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,23 +83,24 @@ function CategoryManagement() {
         });
         if (result.succeeded) {
             onFetch();
-        }
-    }, [dialogs.deleteCategory.data]);
+        closeDialog('deleteJobCategory'); // Ensure dialog is closed after successful deletion
+    }
+}, [dialogs.deleteJobCategory.data, callApi, onFetch, toast, closeDialog]);
 
     return (
         <div className="h-fit">
             <ConfirmDialog
-                visible={dialogs.deleteCategory.visible}
-                closeModal={() => closeDialog('deleteCategory')}
-                onSubmit={handleDeleteCategory}
+                visible={dialogs.deleteJobCategory.visible}
+                closeModal={() => closeDialog('deleteJobCategory')}
+                onSubmit={handleDeleteJobCategory}
             />
-            <CreateCategoryModal />
-            <UpdateCategoryModal />
+            <CreateJobCategoryModal />
+            <UpdateJobCategoryModal />
             <div className="flex justify-between items-center">
-                <CategoryManagementBreadcrumb />
+                <JobCategoryManagementBreadcrumb />
                 <AddButton
-                    hoverContent="Tạo mới loại"
-                    onClick={() => openModal(ModalType.CreateCategory, null, onFetch)}
+                    hoverContent="Tạo mới lĩnh vực"
+                    onClick={() => openModal(ModalType.CreateJobCategory, null, onFetch)}
                 >
                     Create
                 </AddButton>
@@ -109,14 +109,14 @@ function CategoryManagement() {
                 <DataTable
                     columns={columns}
                     param={tableParams}
-                    api="/blog-service/api/Categories/pagination"
+                    api="/job-service/api/Category/pagination"
                     ref={tableRef}
                     selectKey={'id'}
-                    deleteApi="/identity-service/api/Categories"
+                    deleteApi="/job-service/api/Category"
                 />
             </div>
         </div>
     );
 }
 
-export default memo(CategoryManagement);
+export default memo(JobCategoryManagement);
